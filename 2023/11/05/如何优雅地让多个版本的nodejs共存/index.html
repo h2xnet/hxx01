@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="shortcut icon" href="/assets/imgs/favicon.ico" type="image/x-icon"><title>零一会 | 零一会</title><meta name="keywords" content="0,1,编程,代码,旅行,一个人,旅途,诗,远方,音乐,星光,,编程,vue,js,html,css,c/c++,nodejs,python,go"><meta name="keywords" content="人生就是一场旅行，过好每一天，才不辜负这一生"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"><link rel="stylesheet" href="https://at.alicdn.com/t/c/font_3435803_wadmwlqwhps.css"><link rel="stylesheet" href="/style/index.css"><link rel="stylesheet" href="/assets/lib/prettify/prettify.css"><link rel="stylesheet" href="/assets/lib/fancybox/fancybox.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="app"><header class="header yu13_p_30" id="header"><div class="header_left"><h1 class="yu13_logo"><a id="logo" href="/">零一会</a></h1></div><div class="header_right"><div class="header_search yu13_cursor yu13_hover" id="search"><i class="yufont icon-sousuo"></i></div><div class="line yu13_p_10"></div><nav class="header_nav"><ul class="nav"><li class="menu_nav"><a href="/"><i class="fas"></i><span> 首页</span></a></li><li class="menu_nav"><a href="/posts"><i class="fas"></i><span> 文章</span></a></li><li class="menu_nav"><a href="/categorys"><i class="fas"></i><span> 分类</span></a></li><li class="menu_nav"><a href="/tags"><i class="fas"></i><span> 标签</span></a></li><li class="menu_nav"><a href="/about"><i class="fas"></i><span> 关于</span></a></li></ul></nav></div></header><div class="article_topbg" style="background-image: url('/assets/imgs/top_bg.jpg')"><div class="topbg_container"><h1 class="title"></h1><div class="info"><div class="article_meta"><div class="left"><span class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/><a href="/about">星光</a></span><span><i class="yufont icon-yingyong"></i><span>暂无分类</span></span><span><i class="yufont icon-rili"></i>2023-10-31</span></div></div></div></div></div><div class="container log_container clearfix"><div class="article_content left"> <div class="article_main"><article class="content"><div class="content_text article_text"> <h1 id="如何优雅地让多个版本的nodejs共存？"><a href="#如何优雅地让多个版本的nodejs共存？" class="headerlink" title="如何优雅地让多个版本的nodejs共存？"></a>如何优雅地让多个版本的nodejs共存？</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>author: 星光</p>
+<p>weixi:xingguangzfs</p>
+<p>我们都知道，近几年 nodejs 大流行，曾经有一段时间，甚至有 JavaScript 一统天下的趋势，当然现在这种趋势在下降，我认为导致这种结果最主要的原因是还是性能。</p>
+<p>简单的讲，nodejs 是基于 chrome v8 引擎的 JavaScript 运行环境，有了它，Javascript 即可以开发前端程序，又可以开发后端程序，这就产生了一种局面，就是会 Javascript ，就可以一个人完成一个项目，这对于小公司来说，是一种巨大的恩惠。</p>
+<p>在用 nodejs 开发项目的时候，通常不同的项目使用的 nodejs 版本是不一样的，而且通常如果版本跨度比较大的话，往往导致版本之间兼容性差，甚至不兼容的情况产生，那么如何优雅的在多个 nodejs 版本之间切换呢？这时就要用到下面要介绍的工具 nvm。</p>
+<p>nvm 全称 node.js version management ， 是开源的 nodejs 版本管理工具，windows 版本的 nvm 可以在下面地址下载：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/coreybutler/nvm-windows/releases">https://github.com/coreybutler/nvm-windows/releases</a></p>
+<p>如果下载不了，也可以找我要，微信：xingguangzfs</p>
+<p><strong>（1）安装nvm</strong></p>
+<p>下载好 nvm 后，首先就是安装，我下载的是 exe 安装包，安装很简单，双击打开后，一直 “下一步” ，直到安装完成即可。</p>
+<p>安装完后，在 windows 开始菜单中找到 “命令提示符”，最好以管理员方式打开，然后输入命令：nvm  version</p>
+<p>显示出 nvm 版本信息说明安装成功，如下图所示：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/GxHp5MAY3ZBdRlLibsThMt55IwesWeZibJSMJw6N5brgZPm1r5opUAksypsorCJ6EzNk9fyoQoeBhJ8EpTgVyicSA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>接着输入命令：nvm ls</p>
+<p>查看已经安装的 nodejs 版本列表，如下图所示：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/GxHp5MAY3ZBdRlLibsThMt55IwesWeZibJ6Uq5b7cA2O1xegRpI2EeLKyRA2VLbzcpz6AlmWEy6xmy7yA5GUwKug/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>因为是新安装，所以没有任何版本。</p>
+<p><strong>（2）安装 nodejs</strong></p>
+<p>接下来安装 nodejs ，安装时必须指定版本号，比如安装8.12.0版本输入：</p>
+<p>nvm install 8.12.0</p>
+<p>安装会先下载，再安装，需要一点时间，如下图所示：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/GxHp5MAY3ZBdRlLibsThMt55IwesWeZibJdp7xx2YWEFz74CTFBgcwQ6QKy5icyVOibvUTuicpjn5h0CnMgG1WgHObg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>此时再输入查询命令：nvm ls</p>
+<p>显示如下图所示：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/GxHp5MAY3ZBdRlLibsThMt55IwesWeZibJQdJt5bIcrUB5DaB0h9wGuZarGC3QESW0GS5g28K3SdHgllfZbjOFvg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p><strong>（3）指定要使用的 nodejs 版本</strong></p>
+<p>通过输入：nvm ls 查看已经安装的 nodjs 版本列表，</p>
+<p>然后输入：nvm use 8.12.0 指定当前使用的 nodejs 版本，如下图所示：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/GxHp5MAY3ZBdRlLibsThMt55IwesWeZibJjaTDQxc7nJByibFxpnbdCTiavzeNETuTTZ31UYMc1FlaA7TZrdUknl8g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>接着可以输入：node -v 查看当前使用的 nodejs 版本。</p>
+<p><strong>（4）总结</strong></p>
+<p>当需要管理多个 nodejs 版本时，可以使用 nvm 工具非常方便优雅的进行管理，管理过程大致分为三步：</p>
+<p>第一步：安装 nvm，直接用 nvm-setup.exe 安装包;</p>
+<p>第二步：用 nvm 安装指定的 nodejs  版本，命令：nvm install 8.12.0</p>
+<p>第三步：用 nvm 指定当前使用的 nodejs 版本，命令：nvm use 8.12.0</p>
+<p><strong>（5）附录</strong></p>
+<p>常用 nvm 命令表：</p>
+<p>[1] 安装指定的 nodejs 版本：nvm install 8.12.0</p>
+<p>[2] 查看已经安装的 nodejs 列表：nvm ls</p>
+<p>[3] 指定当前使用的 nodejs 版本：nvm use 8.12.0</p>
+<p>[4] 查看当前使用的 nodejs 版本：node -v</p>
+</div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2023/11/05/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E8%AE%A9%E5%A4%9A%E4%B8%AA%E7%89%88%E6%9C%AC%E7%9A%84nodejs%E5%85%B1%E5%AD%98/"></a></p><p> 链接: <a href="/2023/11/05/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E8%AE%A9%E5%A4%9A%E4%B8%AA%E7%89%88%E6%9C%AC%E7%9A%84nodejs%E5%85%B1%E5%AD%98/">https://blog.h2xtrip.com/2023/11/05/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E8%AE%A9%E5%A4%9A%E4%B8%AA%E7%89%88%E6%9C%AC%E7%9A%84nodejs%E5%85%B1%E5%AD%98/</a></p><p> 版权声明: 若无特殊标注皆为 星光 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2023-11-05</p></div><div class="page_turning"><a class="page_up" href="/2023/11/05/TWAIN%E6%89%AB%E6%8F%8F%E4%BB%AA%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/"
+  style="background-image:url(/assets/images/random/19.jpg)">
+  <div class="inner"><span>上一篇:</span>
+    <p>已经没有上一篇了</p>
+  </div>
+</a>
+<a class="page_down" href="javascript:;"
+style="background-image:url(/assets/images/random/7.jpg)">
+<div class="inner"><span>下一篇:</span>
+  <p>已经没有下一篇了</p>
+</div>
+</a>
+</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">星光</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>5</span><p>文章</p></div></li><li> <div> <span>1</span><p>分类</p></div></li><li> <div> <span>2</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E8%AE%A9%E5%A4%9A%E4%B8%AA%E7%89%88%E6%9C%AC%E7%9A%84nodejs%E5%85%B1%E5%AD%98%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">如何优雅地让多个版本的nodejs共存？</span></a></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"><li><a href="/categories/%E7%BC%96%E7%A8%8B/">编程 (1)</a></li></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3><a href="/tags/C/" style="font-size: 16px;">C++</a> <a href="/tags/C-C/" style="font-size: 16px;">C/C++</a></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">零一会</a></div><div class="copy"><span>© 2022<a href="/">零一会</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
