@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="shortcut icon" href="/assets/imgs/favicon.ico" type="image/x-icon"><title>零一会 | 零一会</title><meta name="keywords" content="0,1,编程,代码,旅行,一个人,旅途,诗,远方,音乐,星光,,编程,vue,js,html,css,c/c++,nodejs,python,go"><meta name="keywords" content="人生就是一场旅行，过好每一天，才不辜负这一生"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"><link rel="stylesheet" href="https://at.alicdn.com/t/c/font_3435803_wadmwlqwhps.css"><link rel="stylesheet" href="/style/index.css"><link rel="stylesheet" href="/assets/lib/prettify/prettify.css"><link rel="stylesheet" href="/assets/lib/fancybox/fancybox.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="app"><header class="header yu13_p_30" id="header"><div class="header_left"><h1 class="yu13_logo"><a id="logo" href="/">零一会</a></h1></div><div class="header_right"><div class="header_search yu13_cursor yu13_hover" id="search"><i class="yufont icon-sousuo"></i></div><div class="line yu13_p_10"></div><nav class="header_nav"><ul class="nav"><li class="menu_nav"><a href="/"><i class="fas"></i><span> 首页</span></a></li><li class="menu_nav"><a href="/posts"><i class="fas"></i><span> 文章</span></a></li><li class="menu_nav"><a href="/categorys"><i class="fas"></i><span> 分类</span></a></li><li class="menu_nav"><a href="/tags"><i class="fas"></i><span> 标签</span></a></li><li class="menu_nav"><a href="/about"><i class="fas"></i><span> 关于</span></a></li></ul></nav></div></header><div class="article_topbg" style="background-image: url('/assets/imgs/top_bg.jpg')"><div class="topbg_container"><h1 class="title"></h1><div class="info"><div class="article_meta"><div class="left"><span class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/><a href="/about">星光</a></span><span><i class="yufont icon-yingyong"></i><span>暂无分类</span></span><span><i class="yufont icon-rili"></i>2023-10-31</span></div></div></div></div></div><div class="container log_container clearfix"><div class="article_content left"> <div class="article_main"><article class="content"><div class="content_text article_text"> <h1 id="TWAIN扫描仪协议学习"><a href="#TWAIN扫描仪协议学习" class="headerlink" title="TWAIN扫描仪协议学习"></a>TWAIN扫描仪协议学习</h1><p>author: 星光</p>
+<p>weixi:xingguangzfs</p>
+<h2 id="（一）TWAIN介绍"><a href="#（一）TWAIN介绍" class="headerlink" title="（一）TWAIN介绍"></a>（一）TWAIN介绍</h2><p>TWAIN协议，是一个软件和数码相机、扫描仪等图像输入设备之间的通讯标准。简言之，通过TWAIN协议，软件只需要用一种方法，就可以获得所有支持该协议的图像设备中的图像，不管你是数码相机、扫描仪、还是其它的图像设备。</p>
+<p>TWAIN协议创建的目的就是兼容从不同外设上获取静态图像。TWAIN协议为操作系统提供了软件支持，使得符合TWAIN协议的软件通过调用TWAIN协议接口就能从兼容TWAIN协议的外设上获取静态图像，而不必考虑外设的功能差别。</p>
+<p>从硬件到软件，TWAIN被设计成四层结构：硬件、源、源管理器和软件。</p>
+<p>硬件厂家是通过硬件驱动程序支持TWAIN协议。TWAIN的硬件层接口被称为源，源管理器负责管理来自不同硬件厂家的源。软件不直接调用硬件厂家的TWAIN接口，而是通过向源管理器发送命令方式间接操控硬件。</p>
+<h2 id="（二）TWAIN结构"><a href="#（二）TWAIN结构" class="headerlink" title="（二）TWAIN结构"></a>（二）TWAIN结构</h2><p>TWAIN依靠三个组件协同完成与图像设备间的通讯和数据传输，这三个组件就是：<strong>Application</strong>，<strong>Source Manager</strong>和<strong>Source</strong>。</p>
+<p>（1）<strong>Application</strong>：就是你所要编写的应用程序。</p>
+<p>（2）<strong>Source Manager</strong>：由TWAIN提供的源管理器，它会搜集本地安装的所有符合TWAIN标准的图像设备，并根据需要去加载。同时担任Application和Source之间的桥梁。实际上Application 对Source的所有操作都是由Source Manager代劳的。</p>
+<p>（3）<strong>Source</strong>：指代图像设备，实际在系统中是指由设备供应商提供的支持TWAIN协议的DLL文件，Source Manager通过调用里面的方法与设备进行通讯和数据传输。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在实际应用中，Application与Source Manager间的通讯是通过TWAIN提供的DSM_Entry()函数实现。</span><br><span class="line"></span><br><span class="line">而Source Manager而与Source之间的通讯是通过TWAIN提供的DS_Entry()函数实现。</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="（三）TWAIN接口函数"><a href="#（三）TWAIN接口函数" class="headerlink" title="（三）TWAIN接口函数"></a>（三）TWAIN接口函数</h2><p>要编写应用程序实现与支持TWAIN协议的图像设备通讯，只需要了解上面提到DSM_Entry()接口函数就够了。这个过程有点类似于HTTP的一问一答模式，通过DSM_Entry()向Source Manager发送一条命令，就可以控制图像设备，或者获取设备信息。内部Source Manager会帮忙处理好中间的过程，应用程序无需关心。</p>
+<p>TWAIN定义了一百多个命令消息，Application只需要通过DSM_Entry()函数将命令消息发送给Source Manager，就可以控制图像设备。TWAIN把它定义的操作称为Triplets操作，每个操作用三个定义参数来表示，而这三个参数用不同的前缀来区分。每个Triplets操作都是唯一的，不会有歧意，它代表一个特定的操作行为。这三个前缀分别是：</p>
+<p>Data Group(前缀名DG<u><em></em></u>)、Data Argument(前缀名DAT<u></u>)、Message ID(前缀名MSG<u>_</u>)，每个参数都有各自包含的信息。比如：DG_CONTROL&#x2F;DAT_PARENT&#x2F;MSG_OPENDSM代表打开Source Manager管理器，而DG_CONTROL&#x2F;DAT_PARENT&#x2F;MSG_CLOSEDSM则表示关闭已经打开的Source Manager。更多的定义可以查询相关手册资料，或者见后面附录。</p>
+<p>现在我们知道了DSM_Entry()函数，那么怎么得到它呢?就需要在你的应用程序中包含twain.h头文件，并且加载相应的库，这些库在不同的平台由不同的文件实现，比如windows下调用LoadLibrary加载twain_32.dll&#x2F;twain_64.dll库，并调用GetProcAddress获取DSM_Entry()函数的地址指针，之后就可以调用DSM_Entry向设备发送指令了。</p>
+<p>现在我们已经明白TWAIN所有的操作都是通过DSM_Entry（）函数来实现的，我们先来持下它的定义：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">DSMENTRY DSM_Entry(TW_IDENTITY  *_pOrigin, // 指示发起者指针</span><br><span class="line">                   TW_IDENTITY  *_pDest, // 指示接收者指针</span><br><span class="line">                   TW_UINT32     _DG, // Triplets操作DG参数</span><br><span class="line">                   TW_UINT16     _DAT, // Triplets操作DAT参数</span><br><span class="line">                   TW_UINT16     _MSG, // Triplets操作MSG参数</span><br><span class="line">                   TW_MEMREF     _pData)// 返回数据块的指针</span><br></pre></td></tr></table></figure>
+
+<p>函数执行成功，会返回TWRC_SUCCESS，失败会返回错误码，具体的可以参数手册或者后面的附录。</p>
+<h2 id="（四）TWAIN处理流程"><a href="#（四）TWAIN处理流程" class="headerlink" title="（四）TWAIN处理流程"></a>（四）TWAIN处理流程</h2><p>Application、Source Manager、Source之间要实现数据传输，必须遵循一定的流程，不同的操作需要放到合适的流程中去处理。为此，TWAIN规定了S1到S7共<strong>7种状态</strong>来管理不同的流程，这7种状态分为两类，S1到S3为Source Manager所有，而S4到S7为Source所有，各状态如下所示：</p>
+<p><strong>状态1</strong>：准备会话，此时Application与Source Manager还没有建立连接，此时标志位为1；</p>
+<p><strong>状态2</strong>：加载Source Manager，此时已经成功加载到内存中，但是还没有打开，已经做好了接受Triplets操作请求的准备，此时标志位为2；</p>
+<p><strong>状态3</strong>：打开Source Manager，此时已经成功打开，做好了管理source的准备，此时标志位为3；</p>
+<p><strong>备注</strong>：一个Application只能打开一个Source Manager，而一个Source Manager可以管理多个Source，并且多个Source之间互相独立，互不干扰。</p>
+<p><strong>状态4</strong>：打开Source，此时可以查询或设置Source的属性，比如分辨率，是否支持彩色等，此时标志位为4；</p>
+<p><strong>状态5</strong>：Source可用，此时Source已经打开成功，并初始化完成，可以正常工作了。此时可以发一个T riplets操作，选择是否让Source显示它自身的操作界面，此时标志位为5；</p>
+<p>状态<strong>6</strong>：准备数据传输，此时Source已经准备好为Application传输数据，如果有音频数据要传输，则Application必须确保在传输图像数据之前，先把音频数据传输完成，此时标志位为6；</p>
+<p><strong>状态7</strong>：数据传输开始，Source开始数据传输，此时标志位为7；</p>
+<p><strong>下面我将依照操作流程简要介绍状态转移过程：</strong></p>
+<p>（1）程序刚启动时，默认状态是S1；</p>
+<p>（2）初始化库，获取到DSM_Entry()函数指针后，状态会从S1转到S2；</p>
+<p>（3）打开Source Manager成功后，状态从S2转到S3；</p>
+<p>​	Triplets操作：DG_CONTROL&#x2F;DAT_PARENT&#x2F;MSG_OPENDSM</p>
+<p>​	<strong>S3状态下可以执行的主要操作有：</strong></p>
+<p>​	DG_CONTROL&#x2F;DAT_IDENTITY&#x2F;MSG_USERSELECT ： 显示系统默认的设备选择列表；</p>
+<p>​	DG_CONTROL&#x2F;DAT_IDENTITY&#x2F;MSG_GETDEFAULT ：获取默认图像设备；</p>
+<p>​	DG_CONTROL&#x2F;DAT_IDENTITY&#x2F;MSG_GETFIRST ：遍历图像列表时使用，获取列表第一个设备；</p>
+<p>​	DG_CONTROL&#x2F;DAT_IDENTITY&#x2F;MSG_GETNEXT ： 遍历图像列表时使用，获取列表下一个设备；</p>
+<p>​	返回操作  : 执行DG_CONTROL&#x2F;DAT_PARENT&#x2F;MSG_CLOSEDSM操作，则状态会从S3转到S2；</p>
+<p>​	</p>
+<p>（4）打开某个Source后，状态从S3转到S4，S4状态下可以设置或获取源的各种性能参数；</p>
+<p>​	Triplets操作：DG_CONTROL&#x2F;DAT_IDENTITY&#x2F;MSG_OPENDS</p>
+<p>​	<strong>S4状态下可执行的主要操作：</strong></p>
+<p>​	DG_CONTROL&#x2F;DAT_CAPABILITY&#x2F;MSG_GET : 获取源的属性</p>
+<p>​	DG_CONTROL&#x2F;DAT_CAPABILITY&#x2F;MSG_SET : 设置源的属性</p>
+<p>​	通过上述两个操作，可以查询设备的信息，或者定制设备的功能。</p>
+<p>（5）请求从Source获取数据，状态从S4转到S5，比如对于扫描仪，就是请求扫描；</p>
+<p>​	Triplets操作：DG_CONTROL&#x2F;DAT_USERINTERFACE&#x2F;MSG_ENABLEDS</p>
+<p>（6）当准备传输数据时，状态从S5转到S6；</p>
+<p>​	Triplets操作：DG_CONTROL&#x2F;DAT_EVENT&#x2F;MSG_PROCESSEVENT</p>
+<p>​	<strong>备注</strong>：MSG_PROCESSEVENT是由Source发送的，而不是Application发送，Source Manager需要	监听MSG_PROCESSEVENT事件，并且当为MSG_XFERREADY时表示数据已经准备好，状态就从S5	转到S6；</p>
+<p>（7）开始进行数据传输，状态从S6转到S7；</p>
+<p>​	Triplets操作：DG_IMAGE&#x2F;DAT_IMAGEINFO&#x2F;MSG_GET或</p>
+<p>​							DG_IMAGE&#x2F;DAT_IMAGENATIVEXFER&#x2F;MSG_GET等</p>
+<p>（8）终止数据传输，状态从S7转到S6，再转到S5；</p>
+<p>​	Triplets操作：DG_CONTROL&#x2F;DAT_PENDINGXFERS&#x2F;MSG_ENDXFER</p>
+<p>（9）断开会话，即取消某个会话，状态从S5转到S4；</p>
+<p>​	Triplets操作：DG_CONTROL&#x2F;DAT_USERINTERFACE&#x2F;MSG_DISABLEDS</p>
+<p>（10）关闭会话，即关闭某个Source，状态从S4转到S3；</p>
+<p>​	Triplets操作：DG_CONTROL&#x2F;DAT_USERINTERFACE&#x2F;MSG_CLOSEDS</p>
+<p>（11）关闭Source Manager，状态从S3转到S2；</p>
+<p>​	Triplets操作：DG_CONTROL&#x2F;DAT_PARENT&#x2F;MSG_CLOSEDSM</p>
+<h2 id="（五）TWAIN数据传输模式"><a href="#（五）TWAIN数据传输模式" class="headerlink" title="（五）TWAIN数据传输模式"></a>（五）TWAIN数据传输模式</h2><p>TWAIN协议定义了三种数据传输模式，用于把数据从Source传输到Application。分别是本地模式、文件模式和缓存模式。下面对每一种模式做简单介绍：</p>
+<p><strong>备注</strong>：对于音频数据，只能选择本地模式或文件模式进行传输。</p>
+<p><strong>（1）本地模式：</strong></p>
+<p>所有图像设备都支持本地模式，并且是TWAIN默认的传输模式，它是最容易实现的数据传输模式，但它有一定局限性，只支持DIB图像数据，并且传输时会受到内存大小的限制。</p>
+<p><strong>实现原理</strong>：Source在传输数据时，会单独分配一块内存，把数据存储在此内存中，然后把内存地址告诉Application，Application收到通知后，从内存中获取图像数据，并且要负责释放内在。此模式下，如果当前系统可用内存小于图像大小，则会导致传输失败。</p>
+<p><strong>（2）文件模式</strong></p>
+<p>该模式是让Application创建一个文件，这个文件用于存储传输的数据，Source将对此文件进行读写操作。Source把要传输的数据写入此文件中，Application通过访问该文件，就可获取传输的数据。</p>
+<p>当使用本地模式传输一个大的图像数据，内在不够大时，可以使用该模式来传输。文件模式与缓存模式相比，操作简单，但是传输速度要慢，并且传输完成后，Application还需要去管理此文件。</p>
+<p><strong>（3）缓存模式</strong></p>
+<p>缓存模式在整个传输过程中，使用一个或多个内在缓存区，内存的分配和释放由Application控制。传输过程中，数据被当成一个字节流进行处理，Application必须使用TW_IMAGEINFO 和 TW_IMAGEMEMXFER操作，去获取各个缓存区的信息并把它们正确组织为一个完整的位图。</p>
+<p>如果使用本地模式或者文件模式去处理，则整个传输过程只需要一个Triplets操作就可以完成，但缓存模式，必须要发送多个Triplets操作，不断去获取缓存冲数据，直到获取完成为止。但是，该模式具有很好的灵活性，可以更好的控制数据的获取方式，只是编程上会麻烦一些。</p>
+<h2 id="（六）TWAIN应用实践"><a href="#（六）TWAIN应用实践" class="headerlink" title="（六）TWAIN应用实践"></a>（六）TWAIN应用实践</h2><p>经过以上的学习，相信大家对TWAIN协议有了一定的了解，学习的目的是为了应用，接下来最重要的就是应用以上学习的知识，来实现一个自己的扫描仪控制应用程序。很庆幸的是在github上找到了一个非常不错的开源项目，利用这个项目，可以很方便、很快速的实现自己的扫描工具。</p>
+<p>TWAIN下载地址：<a target="_blank" rel="noopener" href="https://github.com/twain">https://github.com/twain</a></p>
+<p><strong>（1）首先，下载twain-dsm</strong></p>
+<p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/twain/twain-dsm">twain-dsm</a></p>
+<p>twain-dsm ： 此项目由C++开发，支持Windows&#x2F;Linux&#x2F;MacOS，实现了对Source Manager操作功能的封装。本人在Windows下用VS2017编译，进入twain-dsm&#x2F;TWAIN_DSM&#x2F;visual_studio&#x2F;目录，打开对应的版本，把下面的代码注释掉，在属性中选择对应的Windows SDK版本，就可以编译了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CTwnDsmLog::Log()&#123;</span><br><span class="line"></span><br><span class="line">​	// assert(0); // 注释掉此行，作用是当发生错误时弹出崩溃窗口</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>（2）其次，下载对应的Application版本</strong></p>
+<p>比如C#程序选择<a target="_blank" rel="noopener" href="https://github.com/twain/twain-cs">twain-cs</a></p>
+<p>C++程序选择<a target="_blank" rel="noopener" href="https://github.com/twain/twain-samples">twain-samples</a></p>
+<p>C程序选择<a target="_blank" rel="noopener" href="https://github.com/twain/twain-specification">twain-specification</a></p>
+<p>等等。</p>
+<p>我选择的C#版本，用VS2017编译后，记得把之前编译好的TWAINDSM.dll文件复制到twain-cs&#x2F;bin&#x2F;debug目录下，与exe文件同一目录，之后就可以运行了。</p>
+<p><strong>备注</strong>：如果你使用的是C#版本，你要把代码集成到你自己的程序里面，记得TWAIN对象必须建立在Form对话框之下，因此TWAIN内部使用了对话框的事件循环，否则将会遇到程序卡死的情况。</p>
+</div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2023/11/05/TWAIN%E6%89%AB%E6%8F%8F%E4%BB%AA%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/"></a></p><p> 链接: <a href="/2023/11/05/TWAIN%E6%89%AB%E6%8F%8F%E4%BB%AA%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/">https://blog.h2xtrip.com/2023/11/05/TWAIN%E6%89%AB%E6%8F%8F%E4%BB%AA%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 星光 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2023-11-05</p></div><div class="page_turning"><a class="page_up" href="/2023/11/05/hello-world/"
+  style="background-image:url(/assets/images/random/26.jpg)">
+  <div class="inner"><span>上一篇:</span>
+    <p>Hello World</p>
+  </div>
+</a>
+<a class="page_down" href="/2023/11/05/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E8%AE%A9%E5%A4%9A%E4%B8%AA%E7%89%88%E6%9C%AC%E7%9A%84nodejs%E5%85%B1%E5%AD%98/"
+style="background-image:url(https://mmbiz.qpic.cn/mmbiz_png/GxHp5MAY3ZBdRlLibsThMt55IwesWeZibJSMJw6N5brgZPm1r5opUAksypsorCJ6EzNk9fyoQoeBhJ8EpTgVyicSA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片)">
+<div class="inner"><span>下一篇:</span>
+  <p>已经没有下一篇了</p>
+</div>
+</a>
+</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">星光</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>5</span><p>文章</p></div></li><li> <div> <span>1</span><p>分类</p></div></li><li> <div> <span>2</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#TWAIN%E6%89%AB%E6%8F%8F%E4%BB%AA%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">TWAIN扫描仪协议学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89TWAIN%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">（一）TWAIN介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89TWAIN%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">（二）TWAIN结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%88%E4%B8%89%EF%BC%89TWAIN%E6%8E%A5%E5%8F%A3%E5%87%BD%E6%95%B0"><span class="toc-number">1.3.</span> <span class="toc-text">（三）TWAIN接口函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%88%E5%9B%9B%EF%BC%89TWAIN%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B"><span class="toc-number">1.4.</span> <span class="toc-text">（四）TWAIN处理流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%88%E4%BA%94%EF%BC%89TWAIN%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.5.</span> <span class="toc-text">（五）TWAIN数据传输模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%88%E5%85%AD%EF%BC%89TWAIN%E5%BA%94%E7%94%A8%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.6.</span> <span class="toc-text">（六）TWAIN应用实践</span></a></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"><li><a href="/categories/%E7%BC%96%E7%A8%8B/">编程 (1)</a></li></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3><a href="/tags/C/" style="font-size: 16px;">C++</a> <a href="/tags/C-C/" style="font-size: 16px;">C/C++</a></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">零一会</a></div><div class="copy"><span>© 2022<a href="/">零一会</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
